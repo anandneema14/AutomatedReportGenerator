@@ -1,0 +1,22 @@
+﻿// View (Index.cshtml)
+@{
+    ViewData["Title"] = "Report Download";
+}
+
+<h2>Report Download</h2>
+<form asp-action="GetReportLink" method="post">
+    <label for="reportId">Report ID:</label>
+    <input type="number" name="reportId" id="reportId" required />
+    <button type="submit">Get Report Link</button>
+</form>
+
+@if (ViewBag.ReportLink != null)
+{
+    <p>Report generated successfully!</p>
+    <a href="@ViewBag.ReportLink" target="_blank">Download Report</a>
+}
+
+@if (ViewBag.Message != null)
+{
+    <p>@ViewBag.Message</p>
+}
