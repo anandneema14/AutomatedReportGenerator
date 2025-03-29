@@ -47,6 +47,10 @@
               "target": "Package",
               "version": "[12.24.0, )"
             },
+            "System.Data.SqlClient": {
+              "target": "Package",
+              "version": "[4.9.0, )"
+            },
             "iTextSharp.LGPLv2.Core": {
               "target": "Package",
               "version": "[3.7.1, )"

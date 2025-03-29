@@ -20,12 +20,19 @@ public class ReportFunction
         return Run(null, id, log);
     }
 
-    [FunctionName("GenerateReport")]
-    public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = "generate-report/{id}")] HttpRequest req, int id,
+    [FunctionName("GenerateTaxReportPdf")]
+    public static async Task<IActionResult> Run(
+        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "generate-tax-pdf/{reportId}")] HttpRequest req,
+        int reportId,
         ILogger log)
     {
-        log.LogInformation($"Generating report with ID: {id}");
-        var result = await _reportService.GenerateReport(id);
-        return new OkObjectResult(result);
+        var connectionString = Environment.GetEnvironmentVariable("SqlConnectionString");
+        var blobContainerName = Environment.GetEnvironmentVariable("BlobContainerName");
+        var storageConnectionString = Environment.GetEnvironmentVariable("AzureStorageConnectionString");
+
+        var pdfGenerator = new PdfGenerator(connectionString, blobContainerName, storageConnectionString);
+        await pdfGenerator.GenerateTaxReportPdfAsync(reportId);
+
+        return new OkObjectResult($"Tax PDF generated for Report ID: {reportId}");
     }
 }
